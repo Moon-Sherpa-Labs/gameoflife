@@ -20,72 +20,24 @@ let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
 
 // Patterns data
 const patterns = {
-  glider: {
-    name: 'Glider',
-    data: [
-      [0, 1, 0],
-      [0, 0, 1],
-      [1, 1, 1],
-    ],
-  },
-  lwss: {
-    name: 'Lightweight Spaceship',
-    data: [
-      [0, 1, 1, 1, 1],
-      [1, 0, 0, 0, 1],
-      [0, 0, 0, 0, 1],
-      [1, 0, 0, 1, 0],
-    ],
-  },
-  blinker: {
-    name: 'Blinker',
-    data: [
-      [1],
-      [1],
-      [1],
-    ],
-  },
-  block: {
-    name: 'Block',
-    data: [
-      [1, 1],
-      [1, 1],
-    ],
-  },
-  // Add new stable shapes
-  beehive: {
-    name: 'Beehive',
-    data: [
-      [0, 1, 1, 0],
-      [1, 0, 0, 1],
-      [0, 1, 1, 0],
-    ],
-  },
-  loaf: {
-    name: 'Loaf',
-    data: [
-      [0, 1, 1, 0],
-      [1, 0, 0, 1],
-      [0, 1, 0, 1],
-      [0, 0, 1, 0],
-    ],
-  },
-  boat: {
-    name: 'Boat',
-    data: [
-      [1, 1, 0],
-      [1, 0, 1],
-      [0, 1, 0],
-    ],
-  },
-  tub: {
-    name: 'Tub',
-    data: [
-      [0, 1, 0],
-      [1, 0, 1],
-      [0, 1, 0],
-    ],
-  },
+  glider: [
+    [1, 0], [2, 1], [0, 2], [1, 2], [2, 2] // Coordinates relative to the pattern's top-left corner
+  ],
+  lwss: [
+    [1, 0], [4, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3], [4, 3],
+    [0, 4], [1, 4], [2, 4], [3, 4]
+  ],
+  blinker: [
+    [0, 0], [1, 0], [2, 0]
+  ],
+  block: [
+    [0, 0], [1, 0],
+    [0, 1], [1, 1]
+  ]
+  // Add other patterns similarly
 };
 
 // Wait for DOM to load before initializing
@@ -376,3 +328,29 @@ function randomFillBoard() {
   document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
   drawBoard();
 }
+
+// Function to place a pattern on the board
+function placePattern(patternKey, startX, startY) {
+  const pattern = patterns[patternKey];
+  if (!pattern) return;
+
+  pattern.forEach(([dx, dy]) => {
+    const x = (startX + dx + boardSize) % boardSize;
+    const y = (startY + dy + boardSize) % boardSize;
+    board[y][x] = 1;
+  });
+  drawBoard();
+}
+
+// Event Listener for Pattern Cards
+document.querySelectorAll('.pattern-card').forEach(card => {
+  card.addEventListener('click', (e) => {
+    const patternKey = card.getAttribute('data-pattern-key');
+
+    // Get the center position of the board
+    const startX = Math.floor(boardSize / 2);
+    const startY = Math.floor(boardSize / 2);
+
+    placePattern(patternKey, startX, startY);
+  });
+});
