@@ -52,6 +52,40 @@ const patterns = {
       [1, 1],
     ],
   },
+  // Add new stable shapes
+  beehive: {
+    name: 'Beehive',
+    data: [
+      [0, 1, 1, 0],
+      [1, 0, 0, 1],
+      [0, 1, 1, 0],
+    ],
+  },
+  loaf: {
+    name: 'Loaf',
+    data: [
+      [0, 1, 1, 0],
+      [1, 0, 0, 1],
+      [0, 1, 0, 1],
+      [0, 0, 1, 0],
+    ],
+  },
+  boat: {
+    name: 'Boat',
+    data: [
+      [1, 1, 0],
+      [1, 0, 1],
+      [0, 1, 0],
+    ],
+  },
+  tub: {
+    name: 'Tub',
+    data: [
+      [0, 1, 0],
+      [1, 0, 1],
+      [0, 1, 0],
+    ],
+  },
 };
 
 // Wait for DOM to load before initializing
@@ -78,7 +112,7 @@ function initializeGame() {
   // Initialize game components
   resizeCanvas();
   initBoard();
-  generatePatternSelector();
+  generatePatternSelector(); // This should call the function
 }
 
 function setupEventListeners() {
