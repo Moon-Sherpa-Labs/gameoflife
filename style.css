@@ -78,26 +78,41 @@ h1 {
   background-color: #282828;
   border-radius: 5px;
   margin: 5px;
-  padding: 5px;
+  padding: 10px;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 80px;
+  width: 100px;
+  min-height: 120px;
 }
 
-.pattern-card.selected,
-.pattern-card:hover {
+.pattern-card:hover,
+.pattern-card.selected {
   background-color: #3a3a3a;
 }
 
-.pattern-card canvas {
-  margin-bottom: 5px;
-  border: 1px solid #333;
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Adjust based on pattern size */
+  grid-gap: 2px;
+  justify-items: center;
+  padding: 5px;
+}
+
+.pattern-cell {
+  width: 15px;
+  height: 15px;
+  background-color: #1e1e1e; /* Dead cells */
+}
+
+.pattern-cell.alive {
+  background-color: #00FF00; /* Live cells */
 }
 
 .pattern-name {
   font-size: 14px;
   color: #f0f0f0;
+  margin-top: 5px;
 }
 
 /* Explanation Section */

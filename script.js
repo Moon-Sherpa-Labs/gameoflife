@@ -112,7 +112,7 @@ function initializeGame() {
   // Initialize game components
   resizeCanvas();
   initBoard();
-  setupPatternSelector(); // Call the new setup function
+  setupPatternSelector();
 }
 
 function setupEventListeners() {
@@ -302,28 +302,27 @@ function setupPatternSelector() {
   patternCards.forEach((card) => {
     const patternKey = card.dataset.patternKey;
     const pattern = patterns[patternKey];
-    const canvas = card.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas before drawing
+    const gridDiv = card.querySelector('.pattern-grid');
+
+    // Clear any existing cells
+    gridDiv.innerHTML = '';
 
     const patternData = pattern.data;
-    const maxPatternSize = Math.max(patternData.length, patternData[0].length);
-    const cellSize = Math.floor((canvas.width - 10) / maxPatternSize); // Leave some padding
-    const offsetX = Math.floor((canvas.width - (patternData[0].length * cellSize)) / 2);
-    const offsetY = Math.floor((canvas.height - (patternData.length * cellSize)) / 2);
+    const patternHeight = patternData.length;
+    const patternWidth = patternData[0].length;
 
-    // Draw the pattern on the canvas
-    for (let y = 0; y < patternData.length; y++) {
-      for (let x = 0; x < patternData[y].length; x++) {
+    // Set grid template columns based on pattern width
+    gridDiv.style.gridTemplateColumns = `repeat(${patternWidth}, 1fr)`;
+
+    // Create cells
+    for (let y = 0; y < patternHeight; y++) {
+      for (let x = 0; x < patternWidth; x++) {
+        const cellDiv = document.createElement('div');
+        cellDiv.classList.add('pattern-cell');
         if (patternData[y][x]) {
-          ctx.fillStyle = '#00FF00'; // Adjust cell color if needed
-          ctx.fillRect(
-            offsetX + x * cellSize,
-            offsetY + y * cellSize,
-            cellSize,
-            cellSize
-          );
+          cellDiv.classList.add('alive');
         }
+        gridDiv.appendChild(cellDiv);
       }
     }
 
