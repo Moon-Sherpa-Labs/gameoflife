@@ -112,7 +112,7 @@ function initializeGame() {
   // Initialize game components
   resizeCanvas();
   initBoard();
-  generatePatternSelector(); // This should call the function
+  setupPatternSelector(); // Call the new setup function
 }
 
 function setupEventListeners() {
@@ -296,51 +296,43 @@ function countAliveNeighbors(x, y) {
   return count;
 }
 
-// Generate pattern selector UI
-function generatePatternSelector() {
-  const patternSelector = document.getElementById('patternSelector');
-  patternSelector.innerHTML = ''; // Clear existing patterns
-  for (const key in patterns) {
-    const pattern = patterns[key];
-    const card = document.createElement('div');
-    card.classList.add('pattern-card');
-    card.dataset.patternKey = key;
-
-    // Generate pattern preview canvas
-    const previewCanvas = document.createElement('canvas');
-    previewCanvas.width = 80;
-    previewCanvas.height = 80;
-    const previewCtx = previewCanvas.getContext('2d');
+// Set up the pattern selector
+function setupPatternSelector() {
+  const patternCards = document.querySelectorAll('.pattern-card');
+  patternCards.forEach((card) => {
+    const patternKey = card.dataset.patternKey;
+    const pattern = patterns[patternKey];
+    const canvas = card.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
     const patternData = pattern.data;
     const maxDimension = Math.max(patternData.length, patternData[0].length);
     const cellSize = 70 / maxDimension;
     const offsetX = (80 - patternData[0].length * cellSize) / 2;
     const offsetY = (80 - patternData.length * cellSize) / 2;
+
+    // Draw the pattern on the canvas
     for (let y = 0; y < patternData.length; y++) {
       for (let x = 0; x < patternData[y].length; x++) {
         if (patternData[y][x]) {
-          previewCtx.fillStyle = '#00FF00';
-          previewCtx.fillRect(offsetX + x * cellSize, offsetY + y * cellSize, cellSize, cellSize);
+          ctx.fillStyle = '#00FF00'; // Adjust cell color if needed
+          ctx.fillRect(
+            offsetX + x * cellSize,
+            offsetY + y * cellSize,
+            cellSize,
+            cellSize
+          );
         }
       }
     }
-    previewCtx.strokeStyle = '#333';
-    previewCtx.strokeRect(0, 0, 80, 80);
+    ctx.strokeStyle = '#333';
+    ctx.strokeRect(0, 0, 80, 80);
 
-    card.appendChild(previewCanvas);
-
-    const name = document.createElement('div');
-    name.classList.add('pattern-name');
-    name.innerText = pattern.name;
-    card.appendChild(name);
-
+    // Add click event to select the pattern
     card.addEventListener('click', () => {
-      selectedPattern = key;
+      selectedPattern = patternKey;
       updatePatternSelectionUI();
     });
-
-    patternSelector.appendChild(card);
-  }
+  });
 }
 
 // Update pattern selection UI
