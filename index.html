@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conway's Game of Life</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="container">
+    <h1>Conway's Game of Life</h1>
+    <div id="controls">
+      <input type="number" id="boardSize" class="control-input" value="50" min="10" max="200" title="Board Size">
+      <button id="setBoardSizeBtn" class="control-button" title="Set Board Size">Set Size</button>
+      <button id="startBtn" class="control-button" title="Start Simulation">Start</button>
+      <button id="pauseBtn" class="control-button" title="Pause Simulation">Pause</button>
+      <button id="clearBtn" class="control-button" title="Clear Board">Clear</button>
+      <input type="range" id="speedRange" class="control-input" min="1" max="60" value="30" title="Simulation Speed">
+      <span id="speedDisplay">Speed: 30</span>
+    </div>
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+
+    <!-- Pattern Selector -->
+    <div id="patternSelector">
+      <!-- Pattern cards will be generated dynamically -->
+    </div>
+
+    <!-- Explanation Section -->
+    <div id="explanation">
+      <h2>About Conway's Game of Life</h2>
+      <p>
+        Conway's Game of Life is a cellular automaton devised by mathematician John Horton Conway in 1970.
+        It's a zero-player game, meaning its evolution is determined by its initial state, requiring no further input.
+      </p>
+      <p>
+        The game consists of a grid of cells that can be in one of two states: alive or dead.
+        Each cell interacts with its eight neighbors, which are the cells adjacent to it horizontally, vertically, and diagonally.
+      </p>
+      <p>
+        The following rules determine the next state of each cell:
+      </p>
+      <ul>
+        <li>A live cell with fewer than two live neighbors dies (underpopulation).</li>
+        <li>A live cell with two or three live neighbors lives on to the next generation.</li>
+        <li>A live cell with more than three live neighbors dies (overpopulation).</li>
+        <li>A dead cell with exactly three live neighbors becomes a live cell (reproduction).</li>
+      </ul>
+      <p>
+        The game demonstrates how complex patterns and behaviors can emerge from simple rules.
+        It's widely used in various fields, including computer science, mathematics, physics, biology, and philosophy.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+      Built by <a href="https://moonsherpa.com" target="_blank">Moon Sherpa Labs</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
