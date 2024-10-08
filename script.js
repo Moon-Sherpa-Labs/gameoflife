@@ -20,23 +20,52 @@ let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
 
 // Patterns data
 const patterns = {
-  glider: [
-    [1, 0], [2, 1], [0, 2], [1, 2], [2, 2] // Coordinates relative to the pattern's top-left corner
-  ],
-  lwss: [
-    [1, 0], [4, 0],
-    [0, 1],
-    [0, 2],
-    [0, 3], [4, 3],
-    [0, 4], [1, 4], [2, 4], [3, 4]
-  ],
-  blinker: [
-    [0, 0], [1, 0], [2, 0]
-  ],
-  block: [
-    [0, 0], [1, 0],
-    [0, 1], [1, 1]
-  ]
+  glider: {
+    name: 'Glider',
+    coordinates: [
+      [1, 0], [2, 1], [0, 2], [1, 2], [2, 2]
+    ],
+    grid: [
+      [0, 1, 0],
+      [0, 0, 1],
+      [1, 1, 1]
+    ]
+  },
+  blinker: {
+    name: 'Blinker',
+    coordinates: [
+      [0, 0], [1, 0], [2, 0]
+    ],
+    grid: [
+      [1, 1, 1]
+    ]
+  },
+  block: {
+    name: 'Block',
+    coordinates: [
+      [0, 0], [1, 0],
+      [0, 1], [1, 1]
+    ],
+    grid: [
+      [1, 1],
+      [1, 1]
+    ]
+  },
+  lwss: {
+    name: 'Lightweight Spaceship',
+    coordinates: [
+      [1, 0], [2, 0], [3, 0], [4, 0],
+      [0, 1],
+      [0, 3], [4, 1],
+      [4, 2], [3, 3]
+    ],
+    grid: [
+      [0, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1],
+      [0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 0]
+    ]
+  }
   // Add other patterns similarly
 };
 
