@@ -56,7 +56,6 @@ const patterns = {
   },
 };
 
-// Wait for DOM to load before initializing
 document.addEventListener('DOMContentLoaded', () => {
   initializeGame();
 });
@@ -124,7 +123,6 @@ function resizeCanvas() {
   drawBoard();
 }
 
-// Initialize the board
 function initBoard() {
   board = [];
   for (let y = 0; y < boardSize; y++) {
@@ -136,16 +134,11 @@ function initBoard() {
   boardHistory = []; // Reset the history
   generation = 0;
   populationData = [];
-  document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
-  if (populationChart) {
-    populationChart.data.labels = [];
-    populationChart.data.datasets[0].data = [];
-    populationChart.update();
-  }
+  updateGenerationDisplay();
+  resetChart();
   drawBoard();
 }
 
-// Draw the board
 function drawBoard() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (let y = 0; y < boardSize; y++) {
@@ -159,7 +152,6 @@ function drawBoard() {
   drawGrid();
 }
 
-// Draw grid lines
 function drawGrid() {
   ctx.strokeStyle = '#333';
   ctx.beginPath();
@@ -174,11 +166,10 @@ function drawGrid() {
   ctx.stroke();
 }
 
-// Handle cell toggling and pattern placement
 function handleCanvasClick(e) {
   let rect = canvas.getBoundingClientRect();
-  let clientX = e.clientX || e.touches[0].clientX;
-  let clientY = e.clientY || e.touches[0].clientY;
+  let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  let clientY = e.clientY || (e.touches && e.touches[0].clientY);
   let x = Math.floor((clientX - rect.left) / cellSize);
   let y = Math.floor((clientY - rect.top) / cellSize);
 
@@ -192,7 +183,6 @@ function handleCanvasClick(e) {
   drawBoard();
 }
 
-// Start the simulation
 function startSimulation() {
   if (!running) {
     running = true;
@@ -202,13 +192,11 @@ function startSimulation() {
   }
 }
 
-// Pause the simulation
 function pauseSimulation() {
   running = false;
   cancelAnimationFrame(animationFrameId);
 }
 
-// Game loop using requestAnimationFrame
 function gameLoop(timestamp) {
   if (!lastTimestamp || timestamp - lastTimestamp >= 1000 / speed) {
     updateBoard();
@@ -220,7 +208,6 @@ function gameLoop(timestamp) {
   }
 }
 
-// Update the board state
 function updateBoard() {
   let newBoard = [];
   for (let y = 0; y < boardSize; y++) {
@@ -254,7 +241,7 @@ function updateBoard() {
 
   // Update generation and population data
   generation++;
-  document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
+  updateGenerationDisplay();
 
   const livingCells = countLivingCells();
   populationData.push({ generation: generation, livingCells: livingCells });
@@ -262,7 +249,6 @@ function updateBoard() {
   updateChart();
 }
 
-// Count alive neighbors with wrapping edges
 function countAliveNeighbors(x, y) {
   let count = 0;
   for (let i = -1; i <= 1; i++) {
@@ -276,7 +262,6 @@ function countAliveNeighbors(x, y) {
   return count;
 }
 
-// Count the total number of living cells
 function countLivingCells() {
   let count = 0;
   for (let y = 0; y < boardSize; y++) {
@@ -287,7 +272,6 @@ function countLivingCells() {
   return count;
 }
 
-// Generate pattern selector UI
 function generatePatternSelector() {
   const patternSelector = document.getElementById('patternSelector');
   patternSelector.innerHTML = ''; // Clear existing patterns
@@ -334,7 +318,6 @@ function generatePatternSelector() {
   }
 }
 
-// Update pattern selection UI
 function updatePatternSelectionUI() {
   const cards = document.querySelectorAll('.pattern-card');
   cards.forEach((card) => {
@@ -346,7 +329,6 @@ function updatePatternSelectionUI() {
   });
 }
 
-// Place predefined patterns at specified coordinates
 function placePattern(key, x, y) {
   const pattern = patterns[key];
   if (!pattern) return;
@@ -364,7 +346,6 @@ function placePattern(key, x, y) {
   }
 }
 
-// Randomly fill the board
 function randomFillBoard() {
   for (let y = 0; y < boardSize; y++) {
     for (let x = 0; x < boardSize; x++) {
@@ -374,19 +355,14 @@ function randomFillBoard() {
   boardHistory = [];
   generation = 0;
   populationData = [];
-  document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
-  if (populationChart) {
-    populationChart.data.labels = [];
-    populationChart.data.datasets[0].data = [];
-    populationChart.update();
-  }
+  updateGenerationDisplay();
+  resetChart();
   drawBoard();
 }
 
-// Setup the population chart
 function setupChart() {
-  const ctx = document.getElementById('populationChart').getContext('2d');
-  populationChart = new Chart(ctx, {
+  const chartCtx = document.getElementById('populationChart').getContext('2d');
+  populationChart = new Chart(chartCtx, {
     type: 'line',
     data: {
       labels: [], // Generations
@@ -435,9 +411,20 @@ function setupChart() {
   });
 }
 
-// Update the population chart
 function updateChart() {
   populationChart.data.labels.push(generation);
   populationChart.data.datasets[0].data.push(populationData[populationData.length - 1].livingCells);
   populationChart.update();
+}
+
+function resetChart() {
+  if (populationChart) {
+    populationChart.data.labels = [];
+    populationChart.data.datasets[0].data = [];
+    populationChart.update();
+  }
+}
+
+function updateGenerationDisplay() {
+  document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
 }
