@@ -78,15 +78,15 @@ h1 {
   background-color: #282828;
   border-radius: 5px;
   margin: 5px;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 100px;
+  width: 80px;
 }
 
-.pattern-card:hover,
-.pattern-card.selected {
+.pattern-card.selected,
+.pattern-card:hover {
   background-color: #3a3a3a;
 }
 

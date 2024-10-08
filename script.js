@@ -304,11 +304,13 @@ function setupPatternSelector() {
     const pattern = patterns[patternKey];
     const canvas = card.querySelector('canvas');
     const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas before drawing
+
     const patternData = pattern.data;
-    const maxDimension = Math.max(patternData.length, patternData[0].length);
-    const cellSize = 70 / maxDimension;
-    const offsetX = (80 - patternData[0].length * cellSize) / 2;
-    const offsetY = (80 - patternData.length * cellSize) / 2;
+    const maxPatternSize = Math.max(patternData.length, patternData[0].length);
+    const cellSize = Math.floor((canvas.width - 10) / maxPatternSize); // Leave some padding
+    const offsetX = Math.floor((canvas.width - (patternData[0].length * cellSize)) / 2);
+    const offsetY = Math.floor((canvas.height - (patternData.length * cellSize)) / 2);
 
     // Draw the pattern on the canvas
     for (let y = 0; y < patternData.length; y++) {
@@ -324,8 +326,6 @@ function setupPatternSelector() {
         }
       }
     }
-    ctx.strokeStyle = '#333';
-    ctx.strokeRect(0, 0, 80, 80);
 
     // Add click event to select the pattern
     card.addEventListener('click', () => {
