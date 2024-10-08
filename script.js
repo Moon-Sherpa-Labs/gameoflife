@@ -306,4 +306,6 @@ function initializeGame() {
   generatePatternSelector();
 }
 
-initializeGame();
+document.addEventListener('DOMContentLoaded', () => {
+  initializeGame();
+});
