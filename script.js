@@ -53,6 +53,72 @@ const patterns = {
   },
 };
 
+// Wait for DOM to load before initializing
+document.addEventListener('DOMContentLoaded', () => {
+  initializeGame();
+});
+
+function initializeGame() {
+  // Get references to DOM elements
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
+  boardSize = parseInt(document.getElementById('boardSize').value) || 50;
+  speed = parseInt(document.getElementById('speedRange').value) || 30;
+
+  // Set initial cell size
+  cellSize = canvas.width / boardSize;
+
+  // Update speed display
+  document.getElementById('speedDisplay').innerText = `Speed: ${speed}`;
+
+  // Set up event listeners
+  setupEventListeners();
+
+  // Initialize game components
+  resizeCanvas();
+  initBoard();
+  generatePatternSelector();
+}
+
+function setupEventListeners() {
+  // Canvas click handler
+  canvas.addEventListener('click', handleCanvasClick);
+
+  if (isTouchDevice) {
+    canvas.addEventListener('touchstart', function (e) {
+      e.preventDefault();
+      handleCanvasClick(e);
+    });
+  }
+
+  // Control buttons
+  document.getElementById('setBoardSizeBtn').addEventListener('click', () => {
+    boardSize = parseInt(document.getElementById('boardSize').value) || 50;
+    cellSize = canvas.width / boardSize;
+    initBoard();
+  });
+
+  document.getElementById('startBtn').addEventListener('click', startSimulation);
+  document.getElementById('pauseBtn').addEventListener('click', pauseSimulation);
+  document.getElementById('clearBtn').addEventListener('click', initBoard);
+
+  // Speed range input
+  document.getElementById('speedRange').addEventListener('input', (e) => {
+    speed = parseInt(e.target.value);
+    document.getElementById('speedDisplay').innerText = `Speed: ${speed}`;
+  });
+
+  // Window resize
+  window.addEventListener('resize', resizeCanvas);
+}
+
+function resizeCanvas() {
+  canvas.width = Math.min(window.innerWidth - 40, 600);
+  canvas.height = canvas.width;
+  cellSize = canvas.width / boardSize;
+  drawBoard();
+}
+
 // Initialize the board
 function initBoard() {
   board = [];
@@ -111,14 +177,6 @@ function handleCanvasClick(e) {
     board[y][x] = board[y][x] ? 0 : 1;
   }
   drawBoard();
-}
-
-canvas.addEventListener('click', handleCanvasClick);
-if (isTouchDevice) {
-  canvas.addEventListener('touchstart', function (e) {
-    e.preventDefault();
-    handleCanvasClick(e);
-  });
 }
 
 // Start the simulation
@@ -196,22 +254,6 @@ function countAliveNeighbors(x, y) {
   return count;
 }
 
-// Set up event listeners
-document.getElementById('setBoardSizeBtn').addEventListener('click', () => {
-  boardSize = parseInt(document.getElementById('boardSize').value);
-  cellSize = canvas.width / boardSize;
-  initBoard();
-});
-
-document.getElementById('startBtn').addEventListener('click', startSimulation);
-document.getElementById('pauseBtn').addEventListener('click', pauseSimulation);
-document.getElementById('clearBtn').addEventListener('click', initBoard);
-
-document.getElementById('speedRange').addEventListener('input', (e) => {
-  speed = parseInt(e.target.value);
-  document.getElementById('speedDisplay').innerText = `Speed: ${speed}`;
-});
-
 // Generate pattern selector UI
 function generatePatternSelector() {
   const patternSelector = document.getElementById('patternSelector');
@@ -288,24 +330,3 @@ function placePattern(key, x, y) {
     }
   }
 }
-
-// Responsive canvas size
-function resizeCanvas() {
-  canvas.width = Math.min(window.innerWidth - 40, 600);
-  canvas.height = canvas.width;
-  cellSize = canvas.width / boardSize;
-  drawBoard();
-}
-
-window.addEventListener('resize', resizeCanvas);
-
-// Initialize
-function initializeGame() {
-  resizeCanvas();
-  initBoard();
-  generatePatternSelector();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  initializeGame();
-});
