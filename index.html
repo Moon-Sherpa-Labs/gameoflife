@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Conway's Game of Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Include Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Remove Chart.js CDN -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,10 +23,9 @@
     </div>
     <canvas id="gameCanvas" width="500" height="500"></canvas>
 
-    <!-- Stats Section -->
+    <!-- Updated Stats Section (Removed the chart canvas) -->
     <div id="stats">
       <div id="generationDisplay">Generation: 0</div>
-      <canvas id="populationChart" width="400" height="200"></canvas>
     </div>
 
     <!-- Pattern Selector -->
@@ -66,6 +65,7 @@
     </div>
   </div>
 
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>

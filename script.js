@@ -10,8 +10,6 @@ let animationFrameId;
 let lastTimestamp = 0;
 let selectedPattern = null;
 let generation = 0;
-let populationData = [];
-let populationChart;
 
 // History of previous boards to detect oscillations
 let boardHistory = [];
@@ -81,7 +79,6 @@ function initializeGame() {
   resizeCanvas();
   initBoard();
   generatePatternSelector();
-  setupChart();
 }
 
 function setupEventListeners() {
@@ -135,13 +132,7 @@ function initBoard() {
   }
   boardHistory = []; // Reset the history
   generation = 0;
-  populationData = [];
   document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
-  if (populationChart) {
-    populationChart.data.labels = [];
-    populationChart.data.datasets[0].data = [];
-    populationChart.update();
-  }
   drawBoard();
 }
 
@@ -252,14 +243,9 @@ function updateBoard() {
 
   board = newBoard;
 
-  // Update generation and population data
+  // Update generation
   generation++;
   document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
-
-  const livingCells = countLivingCells();
-  populationData.push({ generation: generation, livingCells: livingCells });
-
-  updateChart();
 }
 
 // Count alive neighbors with wrapping edges
@@ -271,17 +257,6 @@ function countAliveNeighbors(x, y) {
       let nx = (x + j + boardSize) % boardSize;
       let ny = (y + i + boardSize) % boardSize;
       count += board[ny][nx];
-    }
-  }
-  return count;
-}
-
-// Count the total number of living cells
-function countLivingCells() {
-  let count = 0;
-  for (let y = 0; y < boardSize; y++) {
-    for (let x = 0; x < boardSize; x++) {
-      if (board[y][x]) count++;
     }
   }
   return count;
@@ -373,71 +348,6 @@ function randomFillBoard() {
   }
   boardHistory = [];
   generation = 0;
-  populationData = [];
   document.getElementById('generationDisplay').innerText = `Generation: ${generation}`;
-  if (populationChart) {
-    populationChart.data.labels = [];
-    populationChart.data.datasets[0].data = [];
-    populationChart.update();
-  }
   drawBoard();
-}
-
-// Setup the population chart
-function setupChart() {
-  const ctx = document.getElementById('populationChart').getContext('2d');
-  populationChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [], // Generations
-      datasets: [
-        {
-          label: 'Living Cells',
-          data: [],
-          borderColor: '#00FF00',
-          backgroundColor: 'rgba(0, 255, 0, 0.1)',
-          fill: true,
-        },
-      ],
-    },
-    options: {
-      animation: false,
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Generation',
-            color: '#f0f0f0',
-          },
-          ticks: {
-            color: '#f0f0f0',
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Number of Living Cells',
-            color: '#f0f0f0',
-          },
-          ticks: {
-            color: '#f0f0f0',
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#f0f0f0',
-          },
-        },
-      },
-    },
-  });
-}
-
-// Update the population chart
-function updateChart() {
-  populationChart.data.labels.push(generation);
-  populationChart.data.datasets[0].data.push(populationData[populationData.length - 1].livingCells);
-  populationChart.update();
 }
