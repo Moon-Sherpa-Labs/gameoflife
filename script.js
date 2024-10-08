@@ -1,11 +1,11 @@
 // Game variables
-let canvas = document.getElementById('gameCanvas');
-let ctx = canvas.getContext('2d');
-let boardSize = parseInt(document.getElementById('boardSize').value);
-let cellSize = canvas.width / boardSize;
+let canvas;
+let ctx;
+let boardSize;
+let cellSize;
 let board = [];
 let running = false;
-let speed = parseInt(document.getElementById('speedRange').value);
+let speed;
 let animationFrameId;
 let lastTimestamp = 0;
 let selectedPattern = null;
