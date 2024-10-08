@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Conway's Game of Life</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Include Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,10 +17,17 @@
       <button id="startBtn" class="control-button" title="Start Simulation">Start</button>
       <button id="pauseBtn" class="control-button" title="Pause Simulation">Pause</button>
       <button id="clearBtn" class="control-button" title="Clear Board">Clear</button>
+      <button id="randomFillBtn" class="control-button" title="Randomly Fill Board">Random Fill</button>
       <input type="range" id="speedRange" class="control-input" min="1" max="60" value="30" title="Simulation Speed">
       <span id="speedDisplay">Speed: 30</span>
     </div>
     <canvas id="gameCanvas" width="500" height="500"></canvas>
+
+    <!-- Stats Section -->
+    <div id="stats">
+      <div id="generationDisplay">Generation: 0</div>
+      <canvas id="populationChart" width="400" height="200"></canvas>
+    </div>
 
     <!-- Pattern Selector -->
     <div id="patternSelector">
